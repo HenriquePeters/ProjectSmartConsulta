@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "smart-consulta-dev-hp-20260407",
+    "dev": "smart-consulta-dev-hp-20260407",
+    "prod": "smart-consulta-prd-hp-260407"
+  }
+}

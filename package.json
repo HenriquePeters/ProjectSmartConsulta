@@ -1,0 +1,12 @@
+{
+  "name": "smart-consulta-workspace",
+  "private": true,
+  "scripts": {
+    "dev:api": "npm run dev --prefix backend",
+    "start:api": "npm start --prefix backend",
+    "seed": "npm run seed --prefix backend",
+    "firebase:serve": "firebase emulators:start --only hosting",
+    "firebase:deploy:dev": "firebase deploy --project dev --only hosting",
+    "firebase:deploy:prod": "firebase deploy --project prod --only hosting"
+  }
+}

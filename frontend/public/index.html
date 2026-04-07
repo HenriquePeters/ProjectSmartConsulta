@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="description" content="Smart Consulta — Revolucionando Agendamentos Médicos. Encontre clínicas, médicos e agende sua consulta online."/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Smart Consulta — Revolucionando Agendamentos Médicos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<script src="./app-config.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#0F6E56;
+  --ink:#0e1a14;--ink2:#2a3d33;--muted:#6b7c72;--faint:#f2f5f3;--faint2:#e8ede9;
+  --white:#ffffff;--border:#d9e3dd;
+  --amber:#EF9F27;--red:#E24B4A;--blue:#378ADD;
+  --shadow:0 4px 24px rgba(14,26,20,0.08);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* ============ NAV ============ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:66px;max-width:1200px;margin:0 auto;padding:0 5%;}
+.logo{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:9px;cursor:pointer;}
+.logo-cross{display:inline-flex;width:30px;height:30px;background:var(--green);border-radius:9px;color:#fff;font-size:17px;font-weight:700;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-text{display:flex;align-items:baseline;gap:4px;font-family:"Fraunces",serif;font-size:21px;}
+.logo-smart{color:#FFB800;font-weight:900;letter-spacing:-.01em;}
+.logo-consulta{color:var(--ink);font-weight:700;}
+.nav-links{display:flex;align-items:center;gap:30px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--muted);transition:color .2s;}
+.nav-links a:hover{color:var(--green);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+.btn-nav-outline{background:transparent;border:1.5px solid var(--border);color:var(--ink);padding:9px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;}
+.btn-nav-outline:hover{border-color:var(--green);color:var(--green);}
+.btn-nav-solid{background:var(--green);color:#fff;border:none;padding:9px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:background .2s;}
+.btn-nav-solid:hover{background:var(--green-dark);}
+/* Avatar nav (logged in) */
+.nav-user{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:12px;transition:background .2s;}
+.nav-user:hover{background:var(--faint);}
+.nav-avatar{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;color:#fff;}
+.nav-username{font-size:14px;font-weight:500;color:var(--ink);}
+
+/* ============ PAGE SYSTEM ============ */
+.page{display:none;}
+.page.active{display:block;}
+
+/* ============ HERO ============ */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 5% 60px;max-width:1200px;margin:0 auto;gap:60px;}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--green-light);color:var(--green-dark);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:500;margin-bottom:22px;}
+.pulse{display:block;width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.4);}}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(38px,5vw,66px);font-weight:900;line-height:1.05;margin-bottom:20px;}
+.hero h1 em{font-style:italic;color:var(--green);}
+.hero-sub{font-size:17px;color:var(--muted);line-height:1.7;margin-bottom:34px;max-width:480px;}
+.hero-btns{display:flex;gap:14px;flex-wrap:wrap;}
+.btn-lg{background:var(--green);color:#fff;border:none;padding:15px 30px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-lg:hover{background:var(--green-dark);transform:translateY(-1px);}
+.btn-lg-out{background:transparent;color:var(--ink);border:1.5px solid var(--border);padding:14px 26px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;}
+.btn-lg-out:hover{border-color:var(--green);color:var(--green);}
+.hero-stats{display:flex;gap:28px;margin-top:36px;padding-top:28px;border-top:1px solid var(--border);}
+.stat-n{font-family:'Fraunces',serif;font-size:26px;font-weight:700;}
+.stat-l{font-size:12px;color:var(--muted);margin-top:1px;}
+
+/* Hero visual */
+.hero-visual{position:relative;}
+.h-card{background:#fff;border:1px solid var(--border);border-radius:22px;padding:24px;box-shadow:var(--shadow);position:relative;z-index:2;}
+.h-clinic-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--faint);}
+.h-clinic-row:last-child{border-bottom:none;padding-bottom:0;}
+.h-icon{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.h-name{font-weight:500;font-size:14px;}
+.h-spec{font-size:12px;color:var(--muted);}
+.h-stars{color:var(--amber);font-size:11px;}
+.badge-g{background:var(--green-light);color:var(--green-dark);border-radius:6px;padding:2px 9px;font-size:11px;font-weight:500;margin-left:auto;white-space:nowrap;}
+.badge-a{background:#FEF3E2;color:#854F0B;border-radius:6px;padding:2px 9px;font-size:11px;font-weight:500;margin-left:auto;white-space:nowrap;}
+.float{position:absolute;background:#fff;border:1px solid var(--border);border-radius:14px;padding:12px 14px;box-shadow:0 8px 28px rgba(0,0,0,.10);font-size:12px;}
+.float.tl{top:-18px;left:-26px;z-index:3;display:flex;align-items:center;gap:8px;}
+.float.br{bottom:-14px;right:-18px;z-index:3;}
+.fdot{width:8px;height:8px;border-radius:50%;background:var(--green);}
+
+/* ============ SEARCH ============ */
+.search-section{background:var(--faint);padding:60px 5%;}
+.s-inner{max-width:780px;margin:0 auto;text-align:center;}
+.sec-lbl{font-size:11px;font-weight:700;color:var(--green);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+.sec-title{font-family:'Fraunces',serif;font-size:clamp(26px,4vw,42px);font-weight:700;margin-bottom:10px;}
+.sec-sub{font-size:15px;color:var(--muted);margin-bottom:32px;}
+.search-wrap{background:#fff;border:1.5px solid var(--border);border-radius:16px;display:flex;align-items:center;padding:6px 6px 6px 18px;gap:10px;box-shadow:var(--shadow);}
+.search-wrap input{flex:1;border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);background:transparent;}
+.search-wrap input::placeholder{color:#aab5af;}
+.search-wrap button{background:var(--green);color:#fff;border:none;border-radius:11px;padding:11px 22px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap;transition:background .2s;}
+.search-wrap button:hover{background:var(--green-dark);}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:18px;}
+.chip{background:#fff;border:1px solid var(--border);border-radius:20px;padding:6px 15px;font-size:13px;font-weight:500;cursor:pointer;color:var(--muted);transition:all .2s;}
+.chip:hover,.chip.active{background:var(--green);border-color:var(--green);color:#fff;}
+
+/* ============ CLINICS ============ */
+.clinics-section{padding:70px 5%;max-width:1200px;margin:0 auto;}
+.clinics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:34px;}
+.clinic-card{background:#fff;border:1px solid var(--border);border-radius:20px;overflow:hidden;cursor:pointer;transition:all .25s;display:block;}
+.clinic-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.10);border-color:var(--green);}
+.cc-img{height:150px;display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;}
+.cc-tag{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92);border-radius:8px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--green-dark);}
+.cc-body{padding:16px 18px 18px;}
+.cc-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:6px;}
+.cc-meta{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);margin-bottom:13px;flex-wrap:wrap;}
+.dot{width:3px;height:3px;border-radius:50%;background:#c5c2bc;}
+.cc-foot{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--faint);padding-top:12px;}
+.price{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:var(--green);}
+.price-lbl{font-size:11px;color:var(--muted);display:block;}
+
+/* ============ HOW ============ */
+.how-section{background:var(--ink);padding:80px 5%;}
+.how-inner{max-width:1100px;margin:0 auto;}
+.how-section .sec-lbl{color:var(--green);}
+.how-section .sec-title{color:#fff;}
+.how-section .sec-sub{color:#8fa398;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin-top:44px;}
+.step{position:relative;}
+.step-n{font-family:'Fraunces',serif;font-size:56px;font-weight:900;color:rgba(29,158,117,.12);line-height:1;margin-bottom:10px;}
+.step-ic{width:48px;height:48px;background:rgba(29,158,117,.15);border:1px solid rgba(29,158,117,.3);border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;}
+.step h3{font-size:15px;font-weight:500;color:#fff;margin-bottom:7px;}
+.step p{font-size:13px;color:#8fa398;line-height:1.6;}
+.step-arr{position:absolute;top:22px;right:-10px;color:rgba(29,158,117,.35);font-size:20px;}
+
+/* ============ BOOKING SECTION ============ */
+.book-section{padding:80px 5%;background:var(--faint);}
+.book-inner{max-width:900px;margin:0 auto;}
+.book-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:40px;align-items:start;margin-top:38px;}
+.book-info h3{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-bottom:14px;}
+.book-info p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:22px;}
+.ipoint{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+.ipoint-ic{width:34px;height:34px;border-radius:10px;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.ipoint h4{font-size:13px;font-weight:500;margin-bottom:2px;}
+.ipoint p{font-size:12px;color:var(--muted);margin:0;}
+.book-form{background:#fff;border:1px solid var(--border);border-radius:20px;padding:26px;}
+.form-t{font-family:'Fraunces',serif;font-size:19px;font-weight:700;margin-bottom:18px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:12px;font-weight:500;color:var(--ink2);margin-bottom:5px;}
+.fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none;transition:border-color .2s;background:#fff;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--green);}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.cancel-note{background:#FEF3E2;border-radius:10px;padding:10px 13px;font-size:12px;color:#633806;display:flex;gap:7px;align-items:flex-start;margin-bottom:14px;}
+.btn-submit{width:100%;background:var(--green);color:#fff;border:none;border-radius:12px;padding:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .2s;}
+.btn-submit:hover{background:var(--green-dark);}
+
+/* ============ DOCTORS ============ */
+.doc-section{padding:80px 5%;}
+.doc-inner{max-width:1100px;margin:0 auto;}
+.doc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:38px;}
+.dc{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;text-align:center;transition:all .2s;cursor:pointer;}
+.dc:hover{border-color:var(--green);transform:translateY(-3px);box-shadow:var(--shadow);}
+.dc-av{width:64px;height:64px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;}
+.dc-name{font-family:'Fraunces',serif;font-size:15px;font-weight:700;margin-bottom:3px;}
+.dc-spec{font-size:12px;color:var(--muted);margin-bottom:8px;}
+.dc-stars{color:var(--amber);font-size:12px;margin-bottom:12px;}
+.dc-btn{width:100%;background:var(--green-light);color:var(--green-dark);border:none;border-radius:8px;padding:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;}
+.dc-btn:hover{background:var(--green);color:#fff;}
+
+/* ============ REVIEWS ============ */
+.rev-section{padding:80px 5%;background:var(--faint);max-width:100%;}
+.rev-inner{max-width:1100px;margin:0 auto;}
+.rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:38px;}
+.rc{background:#fff;border:1px solid var(--border);border-radius:18px;padding:22px;}
+.rc-stars{color:var(--amber);font-size:14px;margin-bottom:10px;}
+.rc-text{font-size:14px;color:var(--ink2);line-height:1.65;margin-bottom:14px;}
+.rc-user{display:flex;align-items:center;gap:10px;}
+.rc-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:12px;}
+.rc-name{font-size:13px;font-weight:500;}
+.rc-date{font-size:11px;color:var(--muted);}
+
+/* ============ POLICY ============ */
+.pol-section{padding:80px 5%;max-width:1100px;margin:0 auto;}
+.pol-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:38px;}
+.pol-card{border-radius:20px;padding:28px;border:1px solid var(--border);}
+.pol-card.green{background:var(--green);color:#fff;border:none;}
+.pol-card h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:14px;}
+.pol-card.green h3{color:#fff;}
+.pol-item{display:flex;gap:9px;margin-bottom:12px;font-size:13px;color:var(--muted);}
+.pol-item::before{content:'✓';color:var(--green);font-weight:700;flex-shrink:0;}
+.pol-card.green .pol-item{color:rgba(255,255,255,.8);}
+.pol-card.green .pol-item::before{color:rgba(255,255,255,.5);}
+.ctable{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;}
+.ctable th{text-align:left;padding:8px 10px;background:var(--faint);color:var(--muted);font-weight:500;}
+.ctable td{padding:9px 10px;border-bottom:1px solid var(--faint);color:var(--ink2);}
+.ctable .warn{color:var(--red);font-weight:500;}
+
+/* ============ FOOTER ============ */
+footer{background:var(--ink);color:#8fa398;padding:56px 5% 28px;}
+.ft-inner{max-width:1200px;margin:0 auto;}
+.ft-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;}
+.ft-logo{font-family:'Fraunces',serif;font-size:20px;font-weight:900;color:#fff;display:flex;align-items:center;gap:6px;margin-bottom:12px;}
+.ft-logo-cross{display:inline-flex;width:26px;height:26px;background:var(--green);border-radius:7px;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;}
+.ft-logo-smart{color:#FFB800;font-weight:900;letter-spacing:-.01em;}
+.ft-logo-consulta{color:#fff;font-weight:700;}
+.ft-desc{font-size:13px;line-height:1.7;}
+.ft-col h4{font-size:12px;font-weight:700;color:#fff;letter-spacing:.05em;text-transform:uppercase;margin-bottom:14px;}
+.ft-col a{display:block;font-size:13px;color:#8fa398;margin-bottom:9px;transition:color .2s;cursor:pointer;}
+.ft-col a:hover{color:var(--green);}
+.ft-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;display:flex;justify-content:space-between;align-items:center;font-size:12px;}
+
+/* ============ MODALS ============ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.overlay.open{display:flex;}
+.modal{background:#fff;border-radius:24px;padding:36px;max-width:460px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:popIn .25s ease;}
+@keyframes popIn{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--faint);border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);}
+.modal-close:hover{background:var(--faint2);}
+.modal h2{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-bottom:5px;}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:22px;}
+.divider{display:flex;align-items:center;gap:12px;margin:14px 0;font-size:12px;color:var(--muted);}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.auth-switch{text-align:center;font-size:13px;color:var(--muted);margin-top:16px;}
+.auth-switch a{color:var(--green);font-weight:500;cursor:pointer;}
+.auth-switch a:hover{text-decoration:underline;}
+.social-btn{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:10px;padding:11px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:border-color .2s;color:var(--ink);margin-bottom:8px;}
+.social-btn:hover{border-color:var(--green);}
+.error-msg{background:#FCEBEB;color:#791F1F;border-radius:8px;padding:9px 12px;font-size:13px;margin-bottom:12px;display:none;}
+
+/* ============ BOOKING MODAL ============ */
+.bm-steps{display:flex;gap:6px;margin-bottom:22px;}
+.bm-step{flex:1;height:3px;border-radius:2px;background:var(--faint2);transition:background .3s;}
+.bm-step.done{background:var(--green);}
+.bm-step.active{background:var(--green);opacity:.5;}
+.time-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;}
+.ts{background:var(--faint);border:1.5px solid transparent;border-radius:9px;padding:9px 4px;text-align:center;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--ink);}
+.ts:hover{border-color:var(--green);background:var(--green-light);}
+.ts.sel{background:var(--green);border-color:var(--green);color:#fff;}
+.ts.off{background:#f7f5f0;color:#ccc;cursor:not-allowed;}
+.cal-row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 0 8px;}
+.cal-row::-webkit-scrollbar{display:none;}
+.cal-day{background:var(--faint);border:1.5px solid transparent;border-radius:11px;padding:8px 12px;text-align:center;cursor:pointer;min-width:50px;transition:all .15s;}
+.cal-day:hover{border-color:var(--green);}
+.cal-day.sel{background:var(--ink);color:#fff;border-color:var(--ink);}
+.cal-day .dn{font-size:17px;font-weight:600;line-height:1;}
+.cal-day .dd{font-size:10px;color:var(--muted);margin-top:2px;}
+.cal-day.sel .dd{color:#9FE1CB;}
+.payment-methods{display:flex;gap:8px;margin-bottom:14px;}
+.pm{flex:1;background:var(--faint);border:2px solid transparent;border-radius:11px;padding:10px;text-align:center;cursor:pointer;font-size:12px;font-weight:500;color:var(--ink);font-family:'DM Sans',sans-serif;transition:all .15s;}
+.pm.sel{background:var(--green-light);border-color:var(--green);color:var(--green-dark);}
+.pm .pm-ic{font-size:20px;display:block;margin-bottom:4px;}
+.summary-line{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;color:var(--ink2);}
+.summary-line.total{font-weight:600;font-size:15px;border-top:1px solid var(--border);margin-top:6px;padding-top:10px;}
+.success-box{text-align:center;padding:16px 0;}
+.sc{width:68px;height:68px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 14px;}
+.success-box h3{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:7px;}
+.success-box p{font-size:13px;color:var(--muted);margin-bottom:18px;}
+.notif-pill{background:#EEEDFE;border-radius:10px;padding:10px 14px;font-size:12px;color:#3C3489;display:flex;gap:8px;align-items:center;}
+
+/* ============ PROFILE PAGE ============ */
+.profile-page{max-width:1100px;margin:0 auto;padding:90px 5% 60px;}
+.profile-layout{display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start;}
+.profile-sidebar{background:#fff;border:1px solid var(--border);border-radius:20px;padding:24px;position:sticky;top:90px;}
+.profile-av-big{width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff;margin:0 auto 12px;}
+.profile-sidebar h2{font-family:'Fraunces',serif;font-size:18px;font-weight:700;text-align:center;margin-bottom:3px;}
+.profile-email{font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px;}
+.sidebar-nav{display:flex;flex-direction:column;gap:4px;}
+.snav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:500;color:var(--muted);transition:all .2s;}
+.snav-item:hover{background:var(--faint);color:var(--ink);}
+.snav-item.active{background:var(--green-light);color:var(--green-dark);}
+.snav-item .si{font-size:16px;width:20px;text-align:center;}
+.profile-main{}
+.ptab{display:none;}
+.ptab.active{display:block;}
+.ptab-title{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-bottom:6px;}
+.ptab-sub{font-size:14px;color:var(--muted);margin-bottom:24px;}
+
+/* Appointment history cards */
+.appt-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px;}
+.appt-card:hover{border-color:var(--green-dark);box-shadow:var(--shadow);}
+.ac-clinic{font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:3px;}
+.ac-meta{font-size:13px;color:var(--muted);margin-bottom:8px;}
+.ac-tags{display:flex;gap:8px;flex-wrap:wrap;}
+.ac-tag{font-size:11px;font-weight:500;border-radius:6px;padding:3px 9px;}
+.ac-right{text-align:right;}
+.ac-price{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:var(--green);margin-bottom:4px;}
+.status-upcoming{background:var(--green-light);color:var(--green-dark);}
+.status-done{background:var(--faint2);color:var(--muted);}
+.status-cancelled{background:#FCEBEB;color:#791F1F;}
+.ac-actions{display:flex;gap:8px;margin-top:10px;}
+.ac-btn{font-size:12px;font-weight:500;border-radius:8px;padding:6px 12px;cursor:pointer;border:1px solid var(--border);background:#fff;font-family:'DM Sans',sans-serif;transition:all .2s;color:var(--ink);}
+.ac-btn:hover{border-color:var(--green);color:var(--green);}
+.ac-btn.danger{border-color:#F7C1C1;color:var(--red);background:#FCEBEB;}
+.ac-btn.danger:hover{background:var(--red);color:#fff;border-color:var(--red);}
+.empty-state{text-align:center;padding:48px 24px;color:var(--muted);}
+.empty-state .es-ic{font-size:48px;margin-bottom:12px;}
+.empty-state p{font-size:15px;}
+
+/* Profile edit */
+.profile-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.pf-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;margin-bottom:16px;}
+.pf-card h3{font-size:15px;font-weight:600;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--faint2);}
+.stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;text-align:center;}
+.stat-card .sc-num{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:var(--green);}
+.stat-card .sc-lbl{font-size:12px;color:var(--muted);margin-top:3px;}
+
+/* Notif settings */
+.notif-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--faint);}
+.notif-row:last-child{border-bottom:none;}
+.notif-row h4{font-size:14px;font-weight:500;}
+.notif-row p{font-size:12px;color:var(--muted);}
+.toggle{position:relative;width:44px;height:24px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.tslider{position:absolute;inset:0;background:var(--border);border-radius:24px;cursor:pointer;transition:.3s;}
+.tslider::before{content:'';position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.3s;}
+.toggle input:checked + .tslider{background:var(--green);}
+.toggle input:checked + .tslider::before{transform:translateX(20px);}
+
+/* ============ TOAST ============ */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;border-radius:12px;padding:12px 22px;font-size:14px;z-index:400;opacity:0;pointer-events:none;transition:opacity .3s;white-space:nowrap;box-shadow:0 8px 28px rgba(0,0,0,.2);}
+.toast.show{opacity:1;}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;padding-top:90px;}
+  .hero-visual{display:none;}
+  .steps{grid-template-columns:1fr 1fr;}
+  .book-layout{grid-template-columns:1fr;}
+  .doc-grid{grid-template-columns:1fr 1fr;}
+  .rev-grid{grid-template-columns:1fr 1fr;}
+  .pol-grid{grid-template-columns:1fr;}
+  .ft-top{grid-template-columns:1fr 1fr;}
+  .profile-layout{grid-template-columns:1fr;}
+  .profile-sidebar{position:static;}
+  .sidebar-nav{flex-direction:row;flex-wrap:wrap;}
+  .snav-item{flex:1;justify-content:center;}
+}
+@media(max-width:600px){
+  .steps{grid-template-columns:1fr;}
+  .rev-grid{grid-template-columns:1fr;}
+  .doc-grid{grid-template-columns:1fr 1fr;}
+  .nav-links{display:none;}
+  .frow{grid-template-columns:1fr;}
+  .profile-form-grid{grid-template-columns:1fr;}
+  .stat-cards{grid-template-columns:1fr 1fr;}
+  .appt-card{grid-template-columns:1fr;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.au{animation:fadeUp .5s ease forwards;}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="showPage('home')"><span class="logo-cross">+</span><span class="logo-text"><span class="logo-smart">SMART</span> <span class="logo-consulta">Consulta</span></span></div>
+    <div class="nav-links">
+      <a onclick="showPage('home');scrollTo('#clinicas')">Clínicas</a>
+      <a onclick="showPage('home');scrollTo('#medicos')">Médicos</a>
+      <a onclick="showPage('home');scrollTo('#como-funciona')">Como funciona</a>
+      <a onclick="showPage('home');scrollTo('#agendar')">Agendar</a>
+    </div>
+    <div class="nav-right" id="nav-right">
+      <button class="btn-nav-outline" onclick="openModal('login')">Entrar</button>
+      <button class="btn-nav-solid" onclick="openModal('register')">Criar conta</button>
+    </div>
+    <div class="nav-right" id="nav-user" style="display:none;">
+      <div class="nav-user" onclick="showPage('profile')">
+        <div class="nav-avatar" id="nav-av" style="background:var(--green);">U</div>
+        <span class="nav-username" id="nav-uname">Usuário</span>
+      </div>
+      <button class="btn-nav-outline" onclick="logout()">Sair</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ PAGE: HOME ============ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section style="padding-top:66px;">
+    <div class="hero">
+      <div>
+        <div class="hero-tag au" style="animation-delay:.05s;"><span class="pulse"></span> Revolucionando Agendamentos Médicos</div>
+        <h1 class="au" style="animation-delay:.1s;">Sua saúde, <em>quando</em> e onde precisar</h1>
+        <p class="hero-sub au" style="animation-delay:.15s;">Encontre clínicas e médicos de qualidade, agende sua consulta em minutos e receba lembretes automáticos. Simples, rápido e confiável.</p>
+        <div class="hero-btns au" style="animation-delay:.2s;">
+          <button class="btn-lg" onclick="openBookingModal()">Agendar agora →</button>
+          <button class="btn-lg-out" onclick="scrollTo('#clinicas')">Ver clínicas</button>
+        </div>
+        <div class="hero-stats au" style="animation-delay:.25s;">
+          <div><div class="stat-n">4.800+</div><div class="stat-l">Médicos cadastrados</div></div>
+          <div><div class="stat-n">320+</div><div class="stat-l">Clínicas parceiras</div></div>
+          <div><div class="stat-n">98%</div><div class="stat-l">Satisfação</div></div>
+        </div>
+      </div>
+      <div class="hero-visual au" style="animation-delay:.2s;">
+        <div class="float tl"><div class="fdot"></div><div><div style="font-size:12px;font-weight:500;">Lembrete de consulta</div><div style="font-size:11px;color:var(--muted);">Amanhã às 10:00 — Dr. Felipe</div></div></div>
+        <div class="h-card">
+          <div style="font-size:12px;font-weight:700;color:var(--muted);margin-bottom:12px;text-transform:uppercase;letter-spacing:.08em;">Disponíveis agora</div>
+          <div class="h-clinic-row"><div class="h-icon" style="background:#E1F5EE;">🏥</div><div><div class="h-name">Clínica Saúde & Vida</div><div class="h-spec"><span class="h-stars">★★★★★</span> 4.9 · Geral</div></div><span class="badge-g">Hoje</span></div>
+          <div class="h-clinic-row"><div class="h-icon" style="background:#E6F1FB;">🩺</div><div><div class="h-name">Centro Médico Pleno</div><div class="h-spec"><span class="h-stars">★★★★</span> 4.6 · Cardio</div></div><span class="badge-g">Hoje</span></div>
+          <div class="h-clinic-row"><div class="h-icon" style="background:#FBEAF0;">❤️</div><div><div class="h-name">Cardio Excelência</div><div class="h-spec"><span class="h-stars">★★★★★</span> 4.8 · Cardio</div></div><span class="badge-a">Amanhã</span></div>
+          <div class="h-clinic-row"><div class="h-icon" style="background:#FAEEDA;">🦷</div><div><div class="h-name">OdontoSorriso</div><div class="h-spec"><span class="h-stars">★★★★</span> 4.7 · Odonto</div></div><span class="badge-g">Hoje</span></div>
+        </div>
+        <div class="float br"><div style="font-size:11px;color:var(--muted);margin-bottom:3px;">Consulta confirmada ✅</div><div style="font-size:13px;font-weight:500;">Dra. Ana Ribeiro</div><div style="font-size:11px;color:var(--muted);">Sex, 14 Mar · 14:30</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <section class="search-section">
+    <div class="s-inner">
+      <div class="sec-lbl">Busca inteligente</div>
+      <h2 class="sec-title">Encontre o médico ideal</h2>
+      <p class="sec-sub">Pesquise por especialidade, nome do médico ou clínica.</p>
+      <div class="search-wrap">
+        <span style="font-size:17px;">🔍</span>
+        <input type="text" id="search-in" placeholder="Cardiologista, Dr. Silva, Clínica..." onkeydown="if(event.key==='Enter')doSearch()"/>
+        <button onclick="doSearch()">Buscar</button>
+      </div>
+      <div class="chips">
+        <div class="chip active" onclick="filterChip(this)">Todos</div>
+        <div class="chip" onclick="filterChip(this)">Clínica Geral</div>
+        <div class="chip" onclick="filterChip(this)">Cardiologia</div>
+        <div class="chip" onclick="filterChip(this)">Pediatria</div>
+        <div class="chip" onclick="filterChip(this)">Dermatologia</div>
+        <div class="chip" onclick="filterChip(this)">Ortopedia</div>
+        <div class="chip" onclick="filterChip(this)">Odontologia</div>
+        <div class="chip" onclick="filterChip(this)">Online</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLINICS -->
+  <section class="clinics-section" id="clinicas">
+    <div class="sec-lbl">Clínicas parceiras</div>
+    <h2 class="sec-title">As melhores clínicas perto de você</h2>
+    <div class="clinics-grid">
+      <div class="clinic-card" onclick="openBookingModal('Clínica Saúde & Vida','Dr. Felipe Moura','Clínica Geral','R$ 150,00')">
+        <div class="cc-img" style="background:linear-gradient(135deg,#9FE1CB,#5DCAA5);">🏥<span class="cc-tag">Destaque</span></div>
+        <div class="cc-body"><div class="cc-title">Clínica Saúde & Vida</div><div class="cc-meta"><span>📍 2,3 km</span><div class="dot"></div><span style="color:var(--amber);">★★★★★</span> 4.9 <span style="font-size:11px;">(312)</span><div class="dot"></div><span>Clínica Geral</span></div><div class="cc-foot"><div><span class="price-lbl">A partir de</span><span class="price">R$ 150</span></div><span class="badge-g">Disponível hoje</span></div></div>
+      </div>
+      <div class="clinic-card" onclick="openBookingModal('Centro Médico Pleno','Dra. Ana Ribeiro','Cardiologia','R$ 120,00')">
+        <div class="cc-img" style="background:linear-gradient(135deg,#B5D4F4,#378ADD);">🩺</div>
+        <div class="cc-body"><div class="cc-title">Centro Médico Pleno</div><div class="cc-meta"><span>📍 4,1 km</span><div class="dot"></div><span style="color:var(--amber);">★★★★</span> 4.6 <span style="font-size:11px;">(189)</span><div class="dot"></div><span>Cardiologia</span></div><div class="cc-foot"><div><span class="price-lbl">A partir de</span><span class="price">R$ 120</span></div><span class="badge-a">Amanhã</span></div></div>
+      </div>
+      <div class="clinic-card" onclick="openBookingModal('Cardio Excelência','Dra. Cíntia Moraes','Cardiologia','R$ 220,00')">
+        <div class="cc-img" style="background:linear-gradient(135deg,#F4C0D1,#D4537E);">❤️<span class="cc-tag">Top avaliado</span></div>
+        <div class="cc-body"><div class="cc-title">Cardio Excelência</div><div class="cc-meta"><span>📍 5,8 km</span><div class="dot"></div><span style="color:var(--amber);">★★★★★</span> 4.8 <span style="font-size:11px;">(94)</span><div class="dot"></div><span>Cardiologia</span></div><div class="cc-foot"><div><span class="price-lbl">A partir de</span><span class="price">R$ 220</span></div><span class="badge-g">Disponível hoje</span></div></div>
+      </div>
+      <div class="clinic-card" onclick="openBookingModal('OdontoSorriso','Dr. Bruno Faria','Odontologia','R$ 80,00')">
+        <div class="cc-img" style="background:linear-gradient(135deg,#FAC775,#EF9F27);">🦷</div>
+        <div class="cc-body"><div class="cc-title">OdontoSorriso</div><div class="cc-meta"><span>📍 1,9 km</span><div class="dot"></div><span style="color:var(--amber);">★★★★</span> 4.7 <span style="font-size:11px;">(201)</span><div class="dot"></div><span>Odontologia</span></div><div class="cc-foot"><div><span class="price-lbl">A partir de</span><span class="price">R$ 80</span></div><span class="badge-g">Disponível hoje</span></div></div>
+      </div>
+      <div class="clinic-card" onclick="openBookingModal('PediaCare','Dra. Renata Luz','Pediatria','R$ 130,00')">
+        <div class="cc-img" style="background:linear-gradient(135deg,#C0DD97,#639922);">🧒</div>
+        <div class="cc-body"><div class="cc-title">PediaCare</div><div class="cc-meta"><span>📍 3,4 km</span><div class="dot"></div><span style="color:var(--amber);">★★★★★</span> 5.0 <span style="font-size:11px;">(67)</span><div class="dot"></div><span>Pediatria</span></div><div class="cc-foot"><div><span class="price-lbl">A partir de</span><span class="price">R$ 130</span></div><span class="badge-g">Disponível hoje</span></div></div>
+      </div>
+      <div class="clinic-card" onclick="openBookingModal('OrthoMax','Dr. Lucas Peixoto','Ortopedia','R$ 180,00')">
+        <div class="cc-img" style="background:linear-gradient(135deg,#CECBF6,#7F77DD);">🦴</div>
+        <div class="cc-body"><div class="cc-title">OrthoMax</div><div class="cc-meta"><span>📍 6,2 km</span><div class="dot"></div><span style="color:var(--amber);">★★★★</span> 4.5 <span style="font-size:11px;">(143)</span><div class="dot"></div><span>Ortopedia</span></div><div class="cc-foot"><div><span class="price-lbl">A partir de</span><span class="price">R$ 180</span></div><span class="badge-a">Quinta-feira</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section" id="como-funciona">
+    <div class="how-inner">
+      <div class="sec-lbl">Simples assim</div>
+      <h2 class="sec-title" style="margin-bottom:8px;">Como funciona</h2>
+      <p class="sec-sub">Do agendamento ao atendimento em 4 passos.</p>
+      <div class="steps">
+        <div class="step"><div class="step-n">01</div><div class="step-ic">🔍</div><h3>Busque sua clínica</h3><p>Pesquise por especialidade, localização ou médico. Veja avaliações reais.</p><div class="step-arr">→</div></div>
+        <div class="step"><div class="step-n">02</div><div class="step-ic">📅</div><h3>Escolha o horário</h3><p>Disponibilidade em tempo real. Escolha data e hora que funcione para você.</p><div class="step-arr">→</div></div>
+        <div class="step"><div class="step-n">03</div><div class="step-ic">💳</div><h3>Pague com segurança</h3><p>Cartão, Pix ou boleto. Pagamento criptografado e confirmação imediata.</p><div class="step-arr">→</div></div>
+        <div class="step"><div class="step-n">04</div><div class="step-ic">🔔</div><h3>Receba lembretes</h3><p>Notificações automáticas 1 dia e 2 horas antes. Nunca mais perca uma consulta.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING SECTION -->
+  <section class="book-section" id="agendar">
+    <div class="book-inner">
+      <div class="sec-lbl">Agendamento</div>
+      <h2 class="sec-title">Agende sua consulta agora</h2>
+      <div class="book-layout">
+        <div class="book-info">
+          <h3>Rápido, fácil e seguro</h3>
+          <p>Preencha o formulário e nossa equipe confirmará os detalhes da sua consulta.</p>
+          <div class="ipoint"><div class="ipoint-ic">📍</div><div><h4>Localização precisa</h4><p>Veja no mapa onde fica cada clínica.</p></div></div>
+          <div class="ipoint"><div class="ipoint-ic">💳</div><div><h4>Pagamento seguro</h4><p>Cartão, Pix ou boleto — 100% criptografado.</p></div></div>
+          <div class="ipoint"><div class="ipoint-ic">⚠️</div><div><h4>Taxa de cancelamento</h4><p>Cancelamentos com menos de 24h têm multa de 30%.</p></div></div>
+          <div class="ipoint"><div class="ipoint-ic">🔔</div><div><h4>Notificações</h4><p>Lembretes 1 dia e 2 horas antes da consulta.</p></div></div>
+        </div>
+        <div class="book-form">
+          <div class="form-t">Pré-agendamento</div>
+          <div class="frow"><div class="fg"><label>Nome completo</label><input type="text" placeholder="Seu nome"/></div><div class="fg"><label>WhatsApp</label><input type="text" placeholder="(47) 99999-9999"/></div></div>
+          <div class="fg"><label>E-mail</label><input type="email" placeholder="seu@email.com"/></div>
+          <div class="frow"><div class="fg"><label>Especialidade</label><select><option>Clínica Geral</option><option>Cardiologia</option><option>Pediatria</option><option>Dermatologia</option><option>Ortopedia</option><option>Odontologia</option></select></div><div class="fg"><label>Tipo</label><select><option>Presencial</option><option>Online</option></select></div></div>
+          <div class="frow"><div class="fg"><label>Data</label><input type="date"/></div><div class="fg"><label>Horário</label><select><option>08:00</option><option>09:00</option><option>10:00</option><option>11:00</option><option>14:00</option><option>15:00</option><option>16:00</option></select></div></div>
+          <div class="cancel-note">⚠️ <span>Cancelamentos com menos de 24h têm <strong>taxa de 30%</strong>.</span></div>
+          <button class="btn-submit" onclick="submitQuickForm()">Confirmar pré-agendamento →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCTORS -->
+  <section class="doc-section" id="medicos">
+    <div class="doc-inner">
+      <div class="sec-lbl">Especialistas</div>
+      <h2 class="sec-title">Médicos em destaque</h2>
+      <div class="doc-grid">
+        <div class="dc" onclick="openBookingModal('Clínica Saúde & Vida','Dr. Felipe Moura','Clínica Geral','R$ 150,00')"><div class="dc-av" style="background:#E1F5EE;color:#0F6E56;">FM</div><div class="dc-name">Dr. Felipe Moura</div><div class="dc-spec">Clínica Geral</div><div class="dc-stars">★★★★★ <span style="color:var(--muted);font-size:11px;">4.9</span></div><button class="dc-btn">Agendar</button></div>
+        <div class="dc" onclick="openBookingModal('Centro Médico Pleno','Dra. Ana Ribeiro','Cardiologia','R$ 120,00')"><div class="dc-av" style="background:#FBEAF0;color:#993556;">AR</div><div class="dc-name">Dra. Ana Ribeiro</div><div class="dc-spec">Cardiologia</div><div class="dc-stars">★★★★★ <span style="color:var(--muted);font-size:11px;">4.8</span></div><button class="dc-btn">Agendar</button></div>
+        <div class="dc" onclick="openBookingModal('OrthoMax','Dr. Lucas Peixoto','Ortopedia','R$ 180,00')"><div class="dc-av" style="background:#E6F1FB;color:#185FA5;">LP</div><div class="dc-name">Dr. Lucas Peixoto</div><div class="dc-spec">Ortopedia</div><div class="dc-stars">★★★★ <span style="color:var(--muted);font-size:11px;">4.6</span></div><button class="dc-btn">Agendar</button></div>
+        <div class="dc" onclick="openBookingModal('Cardio Excelência','Dra. Camila Nunes','Dermatologia','R$ 200,00')"><div class="dc-av" style="background:#FAEEDA;color:#633806;">CN</div><div class="dc-name">Dra. Camila Nunes</div><div class="dc-spec">Dermatologia</div><div class="dc-stars">★★★★★ <span style="color:var(--muted);font-size:11px;">4.9</span></div><button class="dc-btn">Agendar</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="rev-section">
+    <div class="rev-inner">
+      <div class="sec-lbl">Depoimentos</div>
+      <h2 class="sec-title">O que os pacientes dizem</h2>
+      <div class="rev-grid">
+        <div class="rc"><div class="rc-stars">★★★★★</div><div class="rc-text">"Incrível! Encontrei um cardiologista em menos de 2 minutos e o agendamento foi super simples. O lembrete automático salvou minha consulta!"</div><div class="rc-user"><div class="rc-av" style="background:#E1F5EE;color:#0F6E56;">ML</div><div><div class="rc-name">Maria Lima</div><div class="rc-date">há 3 dias</div></div></div></div>
+        <div class="rc"><div class="rc-stars">★★★★★</div><div class="rc-text">"Plataforma excelente. Transparência total nos preços e avaliações. Nunca mais vou agendar consulta de outro jeito."</div><div class="rc-user"><div class="rc-av" style="background:#E6F1FB;color:#185FA5;">RS</div><div><div class="rc-name">Roberto Santos</div><div class="rc-date">há 1 semana</div></div></div></div>
+        <div class="rc"><div class="rc-stars">★★★★★</div><div class="rc-text">"O sistema de notificação é perfeito. Recebi aviso 1 dia antes e 2 horas antes. Médico super atencioso."</div><div class="rc-user"><div class="rc-av" style="background:#FBEAF0;color:#993556;">JP</div><div><div class="rc-name">Julia Pereira</div><div class="rc-date">há 2 semanas</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POLICY -->
+  <section class="pol-section">
+    <div class="sec-lbl">Transparência</div>
+    <h2 class="sec-title">Regras claras para todos</h2>
+    <div class="pol-grid">
+      <div class="pol-card green"><h3>O que está incluído</h3><div class="pol-item">Agendamento online 24 horas por dia</div><div class="pol-item">Notificações automáticas de lembrete</div><div class="pol-item">Pagamento seguro via Cartão, Pix ou Boleto</div><div class="pol-item">Avaliações verificadas de pacientes reais</div><div class="pol-item">Localização e contato de cada clínica</div><div class="pol-item">Suporte por WhatsApp e chat</div><div class="pol-item">Histórico completo de consultas no perfil</div></div>
+      <div class="pol-card"><h3>Taxa de cancelamento</h3><p style="font-size:13px;color:var(--muted);margin-bottom:14px;">Para garantir aproveitamento dos horários:</p><table class="ctable"><tr><th>Antecedência</th><th>Taxa</th></tr><tr><td>Mais de 48 horas</td><td style="color:var(--green-dark);font-weight:500;">Sem taxa</td></tr><tr><td>Entre 24–48 horas</td><td style="color:var(--amber);font-weight:500;">10% do valor</td></tr><tr><td>Menos de 24 horas</td><td class="warn">30% do valor</td></tr><tr><td>No mesmo dia</td><td class="warn">50% do valor</td></tr></table></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="ft-inner">
+      <div class="ft-top">
+        <div><div class="ft-logo"><span class="ft-logo-cross">+</span><span class="ft-logo-smart">SMART</span><span class="ft-logo-consulta"> Consulta</span></div><p class="ft-desc">A plataforma mais completa para agendamento de consultas médicas no Brasil.</p></div>
+        <div class="ft-col"><h4>Plataforma</h4><a onclick="scrollTo('#clinicas')">Clínicas</a><a onclick="showPage('home');scrollTo('#medicos')">Médicos</a><a>Teleconsulta</a><a onclick="scrollTo('#como-funciona')">Como funciona</a></div>
+        <div class="ft-col"><h4>Empresa</h4><a>Sobre nós</a><a>Para clínicas</a><a>Blog de saúde</a><a>Carreiras</a></div>
+        <div class="ft-col"><h4>Suporte</h4><a>Central de ajuda</a><a>WhatsApp</a><a>Privacidade</a><a>Termos de uso</a></div>
+      </div>
+      <div class="ft-bot"><span>© 2026 Smart Consulta. Todos os direitos reservados.</span><span style="color:var(--green);">Feito com ♥ para sua saúde</span></div>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+<!-- ============ PAGE: PROFILE ============ -->
+<div class="page" id="page-profile">
+  <div class="profile-page">
+    <div class="profile-layout">
+      <!-- Sidebar -->
+      <div class="profile-sidebar">
+        <div class="profile-av-big" id="prof-av-big" style="background:var(--green);">U</div>
+        <h2 id="prof-name">Usuário</h2>
+        <div class="profile-email" id="prof-email">email@exemplo.com</div>
+        <div class="sidebar-nav">
+          <div class="snav-item active" onclick="switchTab('dashboard',this)"><span class="si">📊</span> Painel</div>
+          <div class="snav-item" onclick="switchTab('appointments',this)"><span class="si">📅</span> Consultas</div>
+          <div class="snav-item" onclick="switchTab('settings',this)"><span class="si">⚙️</span> Dados</div>
+          <div class="snav-item" onclick="switchTab('notifications',this)"><span class="si">🔔</span> Notificações</div>
+        </div>
+      </div>
+
+      <!-- Main -->
+      <div class="profile-main">
+
+        <!-- DASHBOARD TAB -->
+        <div class="ptab active" id="tab-dashboard">
+          <div class="ptab-title" id="dash-hello">Olá, Usuário!</div>
+          <div class="ptab-sub">Bem-vindo ao seu painel de saúde.</div>
+          <div class="stat-cards" id="stat-cards">
+            <div class="stat-card"><div class="sc-num" id="sc-total">0</div><div class="sc-lbl">Consultas totais</div></div>
+            <div class="stat-card"><div class="sc-num" id="sc-upcoming">0</div><div class="sc-lbl">Próximas</div></div>
+            <div class="stat-card"><div class="sc-num" id="sc-done">0</div><div class="sc-lbl">Realizadas</div></div>
+          </div>
+          <div class="pf-card">
+            <h3>Próxima consulta</h3>
+            <div id="next-appt-box"></div>
+          </div>
+          <div class="pf-card" style="margin-top:14px;">
+            <h3>Atividade recente</h3>
+            <div id="recent-activity"></div>
+          </div>
+        </div>
+
+        <!-- APPOINTMENTS TAB -->
+        <div class="ptab" id="tab-appointments">
+          <div class="ptab-title">Minhas Consultas</div>
+          <div class="ptab-sub">Histórico completo de agendamentos.</div>
+          <div class="chips" style="justify-content:flex-start;margin-bottom:18px;padding:0;">
+            <div class="chip active" onclick="filterAppts('all',this)">Todas</div>
+            <div class="chip" onclick="filterAppts('upcoming',this)">Próximas</div>
+            <div class="chip" onclick="filterAppts('done',this)">Realizadas</div>
+            <div class="chip" onclick="filterAppts('cancelled',this)">Canceladas</div>
+          </div>
+          <div id="appts-list"></div>
+        </div>
+
+        <!-- SETTINGS TAB -->
+        <div class="ptab" id="tab-settings">
+          <div class="ptab-title">Meus Dados</div>
+          <div class="ptab-sub">Gerencie suas informações pessoais.</div>
+          <div class="pf-card">
+            <h3>Informações pessoais</h3>
+            <div class="profile-form-grid">
+              <div class="fg"><label>Nome completo</label><input type="text" id="pf-name"/></div>
+              <div class="fg"><label>E-mail</label><input type="email" id="pf-email"/></div>
+              <div class="fg"><label>Telefone</label><input type="text" id="pf-phone" placeholder="(47) 99999-9999"/></div>
+              <div class="fg"><label>Data de nascimento</label><input type="date" id="pf-birth"/></div>
+              <div class="fg"><label>CPF</label><input type="text" id="pf-cpf" placeholder="000.000.000-00"/></div>
+              <div class="fg"><label>Convênio</label><input type="text" id="pf-conv" placeholder="Particular / Nome do plano"/></div>
+            </div>
+            <button class="btn-submit" style="max-width:200px;margin-top:6px;" onclick="saveProfile()">Salvar alterações</button>
+          </div>
+          <div class="pf-card">
+            <h3>Segurança</h3>
+            <div class="fg"><label>Senha atual</label><input type="password" placeholder="••••••••"/></div>
+            <div class="fg"><label>Nova senha</label><input type="password" placeholder="••••••••"/></div>
+            <div class="fg"><label>Confirmar nova senha</label><input type="password" placeholder="••••••••"/></div>
+            <button class="btn-submit" style="max-width:200px;margin-top:6px;" onclick="showToast('✅ Senha alterada com sucesso!')">Alterar senha</button>
+          </div>
+        </div>
+
+        <!-- NOTIFICATIONS TAB -->
+        <div class="ptab" id="tab-notifications">
+          <div class="ptab-title">Notificações</div>
+          <div class="ptab-sub">Configure como quer receber seus lembretes.</div>
+          <div class="pf-card">
+            <h3>Canais de notificação</h3>
+            <div class="notif-row"><div><h4>E-mail</h4><p>Receber confirmações e lembretes por e-mail</p></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+            <div class="notif-row"><div><h4>SMS</h4><p>Mensagem de texto no celular cadastrado</p></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+            <div class="notif-row"><div><h4>WhatsApp</h4><p>Mensagem via WhatsApp Business</p></div><label class="toggle"><input type="checkbox"/><span class="tslider"></span></label></div>
+            <div class="notif-row"><div><h4>Push (navegador)</h4><p>Notificações diretas no seu navegador</p></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+          </div>
+          <div class="pf-card">
+            <h3>Antecedência dos lembretes</h3>
+            <div class="notif-row"><div><h4>1 semana antes</h4><p>Lembrete semanal da consulta agendada</p></div><label class="toggle"><input type="checkbox"/><span class="tslider"></span></label></div>
+            <div class="notif-row"><div><h4>1 dia antes</h4><p>Lembrete na véspera da consulta</p></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+            <div class="notif-row"><div><h4>2 horas antes</h4><p>Lembrete de última hora</p></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+            <div class="notif-row"><div><h4>30 minutos antes</h4><p>Aviso de que a consulta está próxima</p></div><label class="toggle"><input type="checkbox"/><span class="tslider"></span></label></div>
+          </div>
+          <div class="pf-card">
+            <h3>Outras notificações</h3>
+            <div class="notif-row"><div><h4>Promoções e novidades</h4><p>Receba ofertas de clínicas parceiras</p></div><label class="toggle"><input type="checkbox"/><span class="tslider"></span></label></div>
+            <div class="notif-row"><div><h4>Avaliações</h4><p>Lembrete para avaliar consultas realizadas</p></div><label class="toggle"><input type="checkbox" checked/><span class="tslider"></span></label></div>
+          </div>
+          <button class="btn-submit" style="max-width:220px;" onclick="showToast('✅ Preferências salvas!')">Salvar preferências</button>
+        </div>
+
+      </div><!-- /profile-main -->
+    </div>
+  </div>
+</div><!-- /page-profile -->
+
+<!-- ============ MODAL: LOGIN ============ -->
+<div class="overlay" id="overlay-login" onclick="closeIfOut(event,'overlay-login')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('login')">✕</button>
+    <h2>Entrar na conta</h2>
+    <p class="modal-sub">Acesse seu histórico e gerencie seus agendamentos.</p>
+    <div class="error-msg" id="login-err">E-mail ou senha inválidos.</div>
+    <div class="fg"><label>E-mail</label><input type="email" id="login-email" placeholder="seu@email.com"/></div>
+    <div class="fg"><label>Senha</label><input type="password" id="login-pass" placeholder="••••••••"/></div>
+    <div style="text-align:right;margin-bottom:14px;"><a style="font-size:12px;color:var(--green);cursor:pointer;">Esqueci minha senha</a></div>
+    <button class="btn-submit" onclick="doLogin()">Entrar</button>
+    <div class="divider">ou</div>
+    <button class="social-btn">🌐 Continuar com Google</button>
+    <div class="auth-switch">Não tem conta? <a onclick="switchModal('login','register')">Criar agora</a></div>
+  </div>
+</div>
+
+<!-- ============ MODAL: REGISTER ============ -->
+<div class="overlay" id="overlay-register" onclick="closeIfOut(event,'overlay-register')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('register')">✕</button>
+    <h2>Criar conta</h2>
+    <p class="modal-sub">É grátis! Agende e acompanhe suas consultas.</p>
+    <div class="error-msg" id="reg-err">Por favor, preencha todos os campos.</div>
+    <div class="frow"><div class="fg"><label>Nome</label><input type="text" id="reg-name" placeholder="Seu nome"/></div><div class="fg"><label>Sobrenome</label><input type="text" id="reg-last" placeholder="Sobrenome"/></div></div>
+    <div class="fg"><label>E-mail</label><input type="email" id="reg-email" placeholder="seu@email.com"/></div>
+    <div class="fg"><label>Telefone / WhatsApp</label><input type="text" id="reg-phone" placeholder="(47) 99999-9999"/></div>
+    <div class="fg"><label>Senha</label><input type="password" id="reg-pass" placeholder="Mín. 6 caracteres"/></div>
+    <div style="font-size:11px;color:var(--muted);margin-bottom:14px;">Ao criar conta, você concorda com os <a style="color:var(--green);">Termos de Uso</a> e <a style="color:var(--green);">Política de Privacidade</a>.</div>
+    <button class="btn-submit" onclick="doRegister()">Criar conta grátis</button>
+    <div class="auth-switch">Já tem conta? <a onclick="switchModal('register','login')">Entrar</a></div>
+  </div>
+</div>
+
+<!-- ============ MODAL: BOOKING ============ -->
+<div class="overlay" id="overlay-booking" onclick="closeIfOut(event,'overlay-booking')">
+  <div class="modal" style="max-width:500px;">
+    <button class="modal-close" onclick="closeModal('booking')">✕</button>
+    <div id="bm-content"></div>
+  </div>
+</div>
+
+<!-- ============ TOAST ============ -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ============ API ============
+function normalizeApiBase(base){
+  if(!base) return '/api';
+  return base.endsWith('/') ? base.slice(0,-1) : base;
+}
+function resolveApiBase(){
+  const cfg=window.SMART_CONSULTA_CONFIG||{};
+  const host=window.location.hostname;
+  const apiByHost=cfg.apiByHost||{};
+  if(apiByHost[host]) return normalizeApiBase(apiByHost[host]);
+  if(host==='localhost'||host==='127.0.0.1') return normalizeApiBase(cfg.localApiBase||'http://localhost:3000/api');
+  return normalizeApiBase(cfg.apiBase||'/api');
+}
+const API_BASE = resolveApiBase();
+async function apiFetch(endpoint, options = {}) {
+  const token = localStorage.getItem('sc_token');
+  const headers = { 'Content-Type': 'application/json', ...options.headers };
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+  const res = await fetch(API_BASE + endpoint, { ...options, headers });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || data.errors?.[0]?.msg || 'Erro');
+  return data;
+}
+
+// ============ STATE ============
+let currentUser = null;
+const USERS_KEY = 'sc_users';
+const SESSION_KEY = 'sc_session';
+const LOCAL_TOKEN = 'local-session';
+const LOCAL_COLORS = ['#1D9E75','#378ADD','#D4537E','#EF9F27','#7F77DD','#E24B4A'];
+
+// Booking state
+let bkClinic='', bkDoc='', bkSpec='', bkPrice='', bkDay='Sex, 14 Mar', bkTime='10:00', bkPayment='Cartão', bkStep=1;
+
+// ============ STORAGE HELPERS ============
+function getUsers(){try{return JSON.parse(localStorage.getItem(USERS_KEY)||'[]');}catch{return[];}}
+function saveUsers(u){localStorage.setItem(USERS_KEY,JSON.stringify(u));}
+function getSession(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null');}catch{return null;}}
+function saveSession(u){localStorage.setItem(SESSION_KEY,JSON.stringify(u));}
+function clearSession(){localStorage.removeItem(SESSION_KEY);}
+function randomLocalColor(){return LOCAL_COLORS[Math.floor(Math.random()*LOCAL_COLORS.length)];}
+function normalizeUser(user){
+  if(!user) return user;
+  const color=user.color||user.avatarColor||randomLocalColor();
+  return {...user,color,avatarColor:user.avatarColor||color,appointments:Array.isArray(user.appointments)?user.appointments:[]};
+}
+function persistCurrentUser(){
+  if(!currentUser) return;
+  currentUser=normalizeUser(currentUser);
+  const users=getUsers();
+  const idx=users.findIndex(u=>u.id===currentUser.id||u.email===currentUser.email);
+  if(idx>=0) users[idx]=currentUser;
+  else users.push(currentUser);
+  saveUsers(users);
+  saveSession(currentUser);
+}
+function buildLocalUser({firstName,lastName,email,phone,password},existingUser){
+  const base=existingUser||{};
+  const color=base.color||base.avatarColor||randomLocalColor();
+  return normalizeUser({
+    id:base.id||('u'+Date.now()),
+    firstName,lastName,email,phone:phone||'',password:password||base.password,
+    cpf:base.cpf||'',healthPlan:base.healthPlan||'',color,avatarColor:color,
+    appointments:base.appointments||[],
+  });
+}
+function loginLocalUser(email,password){
+  const user=getUsers().find(u=>u.email.toLowerCase()===email.toLowerCase());
+  if(!user||user.password!==password) throw new Error('E-mail ou senha inválidos.');
+  return { token: LOCAL_TOKEN, user: normalizeUser(user) };
+}
+function registerLocalUser(firstName,lastName,email,phone,password){
+  const users=getUsers();
+  if(users.some(u=>u.email.toLowerCase()===email.toLowerCase())) throw new Error('Este e-mail já está cadastrado.');
+  const user=buildLocalUser({firstName,lastName,email,phone,password});
+  users.push(user);
+  saveUsers(users);
+  return { token: LOCAL_TOKEN, user };
+}
+function updateLocalUser(updates){
+  if(!currentUser) throw new Error('Usuário não autenticado.');
+  currentUser=normalizeUser({...currentUser,...updates});
+  persistCurrentUser();
+  return { user: currentUser };
+}
+
+// ============ AUTH ============
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-err');
+  if(!email||!pass){err.style.display='block';err.textContent='Preencha e-mail e senha.';return;}
+  try {
+    let data;
+    try{
+      data = await apiFetch('/auth/login',{method:'POST',body:JSON.stringify({email,password:pass})});
+    } catch(_apiError){
+      data = loginLocalUser(email,pass);
+    }
+    localStorage.setItem('sc_token',data.token);
+    err.style.display='none';
+    loginUser(data.user);
+    closeModal('login');
+    showToast('👋 Bem-vindo(a), '+data.user.firstName+'!');
+  } catch(e){ err.style.display='block'; err.textContent=e.message; }
+}
+
+async function doRegister(){
+  const fn=document.getElementById('reg-name').value.trim();
+  const ln=document.getElementById('reg-last').value.trim();
+  const em=document.getElementById('reg-email').value.trim();
+  const ph=document.getElementById('reg-phone').value.trim();
+  const pw=document.getElementById('reg-pass').value;
+  const err=document.getElementById('reg-err');
+  if(!fn||!em||!pw){err.style.display='block';err.textContent='Preencha todos os campos.';return;}
+  if(pw.length<6){err.style.display='block';err.textContent='Senha mínimo 6 caracteres.';return;}
+  try {
+    let data;
+    try{
+      data = await apiFetch('/auth/register',{method:'POST',body:JSON.stringify({firstName:fn,lastName:ln,email:em,phone:ph,password:pw})});
+    } catch(_apiError){
+      data = registerLocalUser(fn,ln,em,ph,pw);
+    }
+    localStorage.setItem('sc_token',data.token);
+    err.style.display='none';
+    loginUser(data.user);
+    closeModal('register');
+    showToast('🎉 Bem-vindo(a), '+fn+'!');
+  } catch(e){ err.style.display='block'; err.textContent=e.message; }
+}
+
+function loginUser(user){
+  currentUser=normalizeUser(user);
+  persistCurrentUser();
+  updateNavUI();
+  populateProfile();
+}
+
+function logout(){
+  currentUser=null;
+  localStorage.removeItem('sc_token');
+  clearSession();
+  updateNavUI();
+  showPage('home');
+  showToast('Até logo! 👋');
+}
+
+function updateNavUI(){
+  const guestEl=document.getElementById('nav-right');
+  const userEl=document.getElementById('nav-user');
+  if(currentUser){
+    guestEl.style.display='none';
+    userEl.style.display='flex';
+    document.getElementById('nav-av').textContent=currentUser.firstName[0].toUpperCase();
+    document.getElementById('nav-av').style.background=currentUser.color;
+    document.getElementById('nav-uname').textContent=currentUser.firstName;
+  } else {
+    guestEl.style.display='flex';
+    userEl.style.display='none';
+  }
+}
+
+// ============ PROFILE ============
+function populateProfile(){
+  if(!currentUser)return;
+  const initials=(currentUser.firstName[0]+(currentUser.lastName?currentUser.lastName[0]:'')).toUpperCase();
+  document.getElementById('prof-av-big').textContent=initials;
+  document.getElementById('prof-av-big').style.background=currentUser.color;
+  document.getElementById('prof-name').textContent=currentUser.firstName+' '+currentUser.lastName;
+  document.getElementById('prof-email').textContent=currentUser.email;
+  document.getElementById('dash-hello').textContent='Olá, '+currentUser.firstName+'!';
+  document.getElementById('pf-name').value=currentUser.firstName+' '+currentUser.lastName;
+  document.getElementById('pf-email').value=currentUser.email;
+  document.getElementById('pf-phone').value=currentUser.phone||'';
+  const appts=currentUser.appointments||[];
+  const upcoming=appts.filter(a=>a.status==='upcoming');
+  const done=appts.filter(a=>a.status==='done');
+  document.getElementById('sc-total').textContent=appts.length;
+  document.getElementById('sc-upcoming').textContent=upcoming.length;
+  document.getElementById('sc-done').textContent=done.length;
+  // Next appointment
+  const nb=document.getElementById('next-appt-box');
+  if(upcoming.length){
+    const a=upcoming[0];
+    nb.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;padding:14px;background:var(--faint);border-radius:12px;">
+      <div><div style="font-weight:600;font-size:15px;margin-bottom:4px;">${a.clinic}</div><div style="font-size:13px;color:var(--muted);">🧑‍⚕️ ${a.doctor} · ${a.spec}</div><div style="font-size:13px;color:var(--muted);">📅 ${a.date} · ${a.time}</div></div>
+      <span class="ac-tag status-upcoming" style="padding:4px 12px;border-radius:8px;font-size:12px;font-weight:600;">Próxima</span>
+    </div>`;
+  } else {
+    nb.innerHTML=`<div class="empty-state"><div class="es-ic">📅</div><p>Nenhuma consulta agendada.<br><a style="color:var(--green);cursor:pointer;" onclick="openBookingModal()">Agendar agora →</a></p></div>`;
+  }
+  // Recent activity
+  const ra=document.getElementById('recent-activity');
+  const recent=appts.slice().reverse().slice(0,3);
+  if(recent.length){
+    ra.innerHTML=recent.map(a=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--faint);">
+      <div><div style="font-size:14px;font-weight:500;">${a.clinic}</div><div style="font-size:12px;color:var(--muted);">${a.doctor} · ${a.date}</div></div>
+      <span class="ac-tag ${a.status==='upcoming'?'status-upcoming':a.status==='done'?'status-done':'status-cancelled'}" style="padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;">${a.status==='upcoming'?'Agendada':a.status==='done'?'Realizada':'Cancelada'}</span>
+    </div>`).join('');
+  } else {
+    ra.innerHTML='<p style="font-size:14px;color:var(--muted);">Nenhuma atividade ainda.</p>';
+  }
+  renderAppts('all');
+}
+
+function renderAppts(filter){
+  if(!currentUser)return;
+  const appts=currentUser.appointments||[];
+  const filtered=filter==='all'?appts:appts.filter(a=>a.status===filter);
+  const el=document.getElementById('appts-list');
+  if(!filtered.length){
+    el.innerHTML=`<div class="empty-state"><div class="es-ic">${filter==='upcoming'?'📅':filter==='done'?'✅':'❌'}</div><p>Nenhuma consulta ${filter==='upcoming'?'agendada':filter==='done'?'realizada':'cancelada'} encontrada.</p></div>`;
+    return;
+  }
+  el.innerHTML=filtered.map(a=>`
+    <div class="appt-card">
+      <div>
+        <div class="ac-clinic">${a.clinic}</div>
+        <div class="ac-meta">🧑‍⚕️ ${a.doctor} · ${a.spec} · ${a.type}</div>
+        <div class="ac-meta">📅 ${a.date} · ⏰ ${a.time}</div>
+        <div class="ac-tags">
+          <span class="ac-tag ${a.status==='upcoming'?'status-upcoming':a.status==='done'?'status-done':'status-cancelled'}">${a.status==='upcoming'?'Agendada':a.status==='done'?'Realizada':'Cancelada'}</span>
+          <span class="ac-tag status-done">${a.type}</span>
+        </div>
+        ${a.status==='upcoming'?`<div class="ac-actions">
+          <button class="ac-btn" onclick="showToast('🗺️ Abrindo localização...')">📍 Como chegar</button>
+          <button class="ac-btn" onclick="showToast('📋 Detalhes da consulta')">Ver detalhes</button>
+          <button class="ac-btn danger" onclick="cancelAppt('${a.id}')">Cancelar</button>
+        </div>`:''}
+        ${a.status==='done'?`<div class="ac-actions"><button class="ac-btn" onclick="showToast('⭐ Obrigado pela avaliação!')">⭐ Avaliar consulta</button><button class="ac-btn" onclick="openBookingModal('${a.clinic}','${a.doctor}','${a.spec}','${a.price}')">Reagendar</button></div>`:''}
+      </div>
+      <div class="ac-right">
+        <div class="ac-price">${a.price}</div>
+        ${a.status==='cancelled'&&a.fee?`<div style="font-size:11px;color:var(--red);">Taxa: ${a.fee}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function filterAppts(filter,el){
+  document.querySelectorAll('#tab-appointments .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  renderAppts(filter);
+}
+
+function cancelAppt(id){
+  if(!currentUser)return;
+  const a=currentUser.appointments.find(x=>x.id===id);
+  if(!a)return;
+  a.status='cancelled';
+  a.fee='R$ 46,50';
+  persistCurrentUser();
+  populateProfile();
+  showToast('⚠️ Consulta cancelada. Taxa de 30% aplicada.');
+}
+
+async function saveProfile(){
+  if(!currentUser)return;
+  const name=document.getElementById('pf-name').value.split(' ');
+  const updates={firstName:name[0]||currentUser.firstName,lastName:name.slice(1).join(' ')||currentUser.lastName,
+    phone:document.getElementById('pf-phone').value,cpf:document.getElementById('pf-cpf').value,
+    healthPlan:document.getElementById('pf-conv').value};
+  try{
+    let d;
+    try{
+      d=await apiFetch('/auth/profile',{method:'PUT',body:JSON.stringify(updates)});
+    } catch(_apiError){
+      d=updateLocalUser(updates);
+    }
+    Object.assign(currentUser,d.user);
+  } catch(e){ Object.assign(currentUser,updates); }
+  persistCurrentUser();
+  populateProfile();
+  showToast('✅ Dados salvos!');
+}
+
+function switchTab(tab,el){
+  document.querySelectorAll('.snav-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+}
+
+// ============ BOOKING MODAL ============
+function openBookingModal(clinic,doc,spec,price){
+  if(clinic){bkClinic=clinic;bkDoc=doc;bkSpec=spec;bkPrice=price;}
+  else{bkClinic='Clínica Saúde & Vida';bkDoc='Dr. Felipe Moura';bkSpec='Clínica Geral';bkPrice='R$ 150,00';}
+  bkStep=1; bkDay='Sex, 14 Mar'; bkTime='10:00'; bkPayment='Cartão';
+  renderBookingStep();
+  document.getElementById('overlay-booking').classList.add('open');
+}
+
+function renderBookingStep(){
+  const c=document.getElementById('bm-content');
+  if(bkStep===1){
+    c.innerHTML=`
+      <h2 style="margin-bottom:4px;">Agendar Consulta</h2>
+      <p class="modal-sub">${bkClinic} · ${bkDoc}</p>
+      <div class="bm-steps"><div class="bm-step done"></div><div class="bm-step active"></div><div class="bm-step"></div><div class="bm-step"></div></div>
+      <div class="fg"><label>Escolha a data</label>
+        <div class="cal-row">
+          ${['12<br><span class="dd">QUI</span>','13<br><span class="dd">SEX</span>','16<br><span class="dd">SEG</span>','17<br><span class="dd">TER</span>','18<br><span class="dd">QUA</span>','19<br><span class="dd">QUI</span>','20<br><span class="dd">SEX</span>'].map((d,i)=>{
+            const days=['Qui, 12 Mar','Sex, 14 Mar','Seg, 16 Mar','Ter, 17 Mar','Qua, 18 Mar','Qui, 19 Mar','Sex, 20 Mar'];
+            return `<div class="cal-day${days[i]===bkDay?' sel':''}" onclick="bkDay='${days[i]}';renderBookingStep()"><div class="dn">${d.split('<')[0]}</div><div class="dd">${['QUI','SEX','SEG','TER','QUA','QUI','SEX'][i]}</div></div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="fg"><label>Horário disponível</label>
+        <div class="time-grid">
+          ${['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','14:00','14:30','15:00','15:30'].map((t,i)=>{
+            const off=i<2||i===7;
+            return `<div class="ts${off?' off':t===bkTime?' sel':''}" onclick="${off?'':`bkTime='${t}';renderBookingStep()`}">${t}</div>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="fg"><label>Tipo de consulta</label>
+        <div style="display:flex;gap:8px;">
+          <div class="ts sel" style="flex:1;padding:10px;" onclick="showToast('Consulta presencial selecionada')">🏥 Presencial</div>
+          <div class="ts" style="flex:1;padding:10px;" onclick="showToast('Teleconsulta selecionada')">💻 Online</div>
+        </div>
+      </div>
+      <button class="btn-submit" onclick="bkStep=2;renderBookingStep()">Próximo: pagamento →</button>`;
+  } else if(bkStep===2){
+    const raw=parseFloat((bkPrice||'R$ 150,00').replace(/[R$\s]/g,'').replace(',','.'));
+    const fee=5;
+    const total=(raw+fee).toFixed(2).replace('.',',');
+    c.innerHTML=`
+      <h2 style="margin-bottom:4px;">Pagamento</h2>
+      <p class="modal-sub">${bkDay} · ${bkTime} · ${bkDoc}</p>
+      <div class="bm-steps"><div class="bm-step done"></div><div class="bm-step done"></div><div class="bm-step active"></div><div class="bm-step"></div></div>
+      <div style="background:var(--faint);border-radius:12px;padding:14px;margin-bottom:14px;">
+        <div class="summary-line"><span>${bkSpec} — ${bkDoc}</span><span>${bkPrice}</span></div>
+        <div class="summary-line"><span style="color:var(--muted);font-size:12px;">${bkDay} às ${bkTime}</span></div>
+        <div class="summary-line"><span>Taxa de conveniência</span><span>R$ 5,00</span></div>
+        <div class="summary-line total"><span>Total</span><span style="color:var(--green);">R$ ${total}</span></div>
+      </div>
+      <div class="cancel-note">⚠️ <span>Cancelamentos com menos de 24h têm <strong>taxa de 30%</strong>.</span></div>
+      <div class="fg"><label>Forma de pagamento</label>
+        <div class="payment-methods">
+          <button class="pm${bkPayment==='Cartão'?' sel':''}" onclick="bkPayment='Cartão';renderBookingStep()"><span class="pm-ic">💳</span>Cartão</button>
+          <button class="pm${bkPayment==='Pix'?' sel':''}" onclick="bkPayment='Pix';renderBookingStep()"><span class="pm-ic">⚡</span>Pix</button>
+          <button class="pm${bkPayment==='Boleto'?' sel':''}" onclick="bkPayment='Boleto';renderBookingStep()"><span class="pm-ic">📄</span>Boleto</button>
+        </div>
+      </div>
+      ${bkPayment==='Cartão'?`
+        <div class="fg"><label>Número do cartão</label><input type="text" placeholder="0000 0000 0000 0000"/></div>
+        <div class="frow"><div class="fg"><label>Validade</label><input type="text" placeholder="MM/AA"/></div><div class="fg"><label>CVV</label><input type="text" placeholder="000"/></div></div>`
+      :bkPayment==='Pix'?`<div style="background:var(--faint);border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;"><div style="font-size:32px;margin-bottom:8px;">📱</div><div style="font-size:13px;color:var(--muted);">Chave Pix gerada. Válida por 30 minutos.</div><div style="font-family:monospace;font-size:12px;background:#fff;padding:10px;border-radius:8px;margin-top:8px;word-break:break-all;color:var(--ink);">00020126580014br.gov.bcb.pix013636...</div><button class="ac-btn" style="margin-top:8px;" onclick="showToast('📋 Chave Pix copiada!')">Copiar chave</button></div>`
+      :`<div style="background:var(--faint);border-radius:12px;padding:14px;text-align:center;margin-bottom:14px;"><div style="font-size:32px;margin-bottom:8px;">📄</div><div style="font-size:13px;color:var(--muted);">Boleto gerado. Vencimento em 1 dia útil.</div></div>`}
+      <div style="display:flex;gap:10px;">
+        <button class="btn-nav-outline" style="flex:1;border-radius:12px;padding:13px;" onclick="bkStep=1;renderBookingStep()">← Voltar</button>
+        <button class="btn-submit" style="flex:2;" onclick="confirmBooking()">Confirmar e pagar →</button>
+      </div>`;
+  } else if(bkStep===3){
+    c.innerHTML=`
+      <div class="bm-steps" style="margin-bottom:24px;"><div class="bm-step done"></div><div class="bm-step done"></div><div class="bm-step done"></div><div class="bm-step done"></div></div>
+      <div class="success-box">
+        <div class="sc">✅</div>
+        <h3>Consulta confirmada!</h3>
+        <p>Você receberá confirmação por e-mail e SMS.</p>
+        <div style="background:var(--faint);border-radius:14px;padding:16px;text-align:left;width:100%;margin-bottom:16px;">
+          <div class="summary-line"><span style="color:var(--muted);">Clínica</span><span>${bkClinic}</span></div>
+          <div class="summary-line"><span style="color:var(--muted);">Médico</span><span>${bkDoc}</span></div>
+          <div class="summary-line"><span style="color:var(--muted);">Data</span><span>${bkDay}</span></div>
+          <div class="summary-line"><span style="color:var(--muted);">Horário</span><span>${bkTime}</span></div>
+          <div class="summary-line"><span style="color:var(--muted);">Pagamento</span><span>${bkPayment}</span></div>
+          <div class="summary-line total"><span>Total</span><span style="color:var(--green);">${bkPrice}</span></div>
+        </div>
+        <div class="notif-pill">🔔 Lembretes ativados: <strong>1 dia</strong> e <strong>2 horas</strong> antes.</div>
+        <button class="btn-submit" style="margin-top:16px;" onclick="goToProfile()">Ver minhas consultas →</button>
+      </div>`;
+  }
+}
+
+function confirmBooking(){
+  if(currentUser){
+    const raw=parseFloat((bkPrice||'R$ 150,00').replace(/[R$\s]/g,'').replace(',','.'));
+    const total='R$ '+(raw+5).toFixed(2).replace('.',',');
+    const newAppt={id:'a'+Date.now(),clinic:bkClinic,doctor:bkDoc,spec:bkSpec,date:bkDay+' 2026',time:bkTime,type:'Presencial',price:total,status:'upcoming'};
+    currentUser.appointments.unshift(newAppt);
+    persistCurrentUser();
+  }
+  bkStep=3; renderBookingStep();
+}
+
+function goToProfile(){
+  closeModal('booking');
+  if(currentUser){populateProfile();showPage('profile');}
+  else{openModal('register');}
+}
+
+// ============ PAGES ============
+function showPage(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  window.scrollTo(0,0);
+  if(p==='profile'){
+    if(!currentUser){openModal('login');showPage('home');return;}
+    populateProfile();
+  }
+}
+
+// ============ MODALS ============
+function openModal(type){
+  document.getElementById('overlay-'+type).classList.add('open');
+}
+function closeModal(type){
+  document.getElementById('overlay-'+type).classList.remove('open');
+}
+function switchModal(from,to){
+  closeModal(from);
+  setTimeout(()=>openModal(to),150);
+}
+function closeIfOut(e,id){
+  if(e.target===document.getElementById(id))closeModal(id.replace('overlay-',''));
+}
+
+// ============ HELPERS ============
+function scrollTo(sel){
+  setTimeout(()=>{
+    const el=document.querySelector(sel);
+    if(el)el.scrollIntoView({behavior:'smooth'});
+  },50);
+}
+function filterChip(el){
+  document.querySelectorAll('.chips .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  showToast('Filtrando: '+el.textContent);
+}
+function doSearch(){
+  const v=document.getElementById('search-in').value.trim();
+  showToast(v?'🔍 Buscando "'+v+'"...':'Digite algo para buscar!');
+}
+function submitQuickForm(){showToast('✅ Pré-agendamento enviado! Entraremos em contato.');}
+let toastT;
+function showToast(m){
+  const t=document.getElementById('toast');
+  t.textContent=m;t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ============ INIT ============
+(async function init(){
+  const token=localStorage.getItem('sc_token');
+  if(token){
+    try{
+      if(token===LOCAL_TOKEN){
+        currentUser=normalizeUser(getSession());
+      } else {
+        const data=await apiFetch('/auth/me');
+        currentUser=normalizeUser(data.user);
+      }
+      if(!currentUser?.appointments){const s=getSession();currentUser=normalizeUser({...currentUser,appointments:s?.appointments||[]});}
+      persistCurrentUser();
+      updateNavUI();
+    } catch(e){
+      const sessionUser=getSession();
+      if(sessionUser){
+        currentUser=normalizeUser(sessionUser);
+        localStorage.setItem('sc_token',LOCAL_TOKEN);
+        persistCurrentUser();
+        updateNavUI();
+      } else {
+        localStorage.removeItem('sc_token');clearSession();
+      }
+    }
+  }
+})();
+</script>
+</body>
+</html>
