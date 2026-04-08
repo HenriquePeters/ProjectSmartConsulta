@@ -1,0 +1,92 @@
+name: Deploy Web App
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      FIREBASE_PROJECT_DEV: ${{ vars.FIREBASE_PROJECT_DEV }}
+      FIREBASE_PROJECT_PRD: ${{ vars.FIREBASE_PROJECT_PRD }}
+      DEV_API_URL: ${{ vars.DEV_API_URL }}
+      PRD_API_URL: ${{ vars.PRD_API_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Resolve target environment
+        id: env
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF_NAME}" == "dev" ]]; then
+            echo "environment_name=DEV" >> "$GITHUB_OUTPUT"
+            echo "firebase_project_id=${FIREBASE_PROJECT_DEV}" >> "$GITHUB_OUTPUT"
+            echo "api_url=${DEV_API_URL}" >> "$GITHUB_OUTPUT"
+          elif [[ "${GITHUB_REF_NAME}" == "main" ]]; then
+            echo "environment_name=PRD" >> "$GITHUB_OUTPUT"
+            echo "firebase_project_id=${FIREBASE_PROJECT_PRD}" >> "$GITHUB_OUTPUT"
+            echo "api_url=${PRD_API_URL}" >> "$GITHUB_OUTPUT"
+          else
+            echo "Branch nao suportada: ${GITHUB_REF_NAME}" >&2
+            exit 1
+          fi
+
+      - name: Validate required CI/CD variables
+        shell: bash
+        run: |
+          test -n "${FIREBASE_TOKEN}" || (echo "Secret FIREBASE_TOKEN nao configurado." >&2 && exit 1)
+          test -n "${{ steps.env.outputs.firebase_project_id }}" || (echo "Variable do projeto Firebase nao configurada." >&2 && exit 1)
+          test -n "${{ steps.env.outputs.api_url }}" || (echo "Variable da API nao configurada." >&2 && exit 1)
+
+      - name: Generate environment config for hosting
+        shell: bash
+        run: |
+          cat > frontend/public/app-config.js <<EOF
+          window.SMART_CONSULTA_CONFIG = {
+            localApiBase: 'http://localhost:3000/api',
+            apiBase: '${{ steps.env.outputs.api_url }}/api',
+            apiByHost: {
+              'localhost': 'http://localhost:3000/api',
+              '127.0.0.1': 'http://localhost:3000/api',
+              'smart-consulta-dev-hp-20260407.web.app': '${DEV_API_URL}/api',
+              'smart-consulta-dev-hp-20260407.firebaseapp.com': '${DEV_API_URL}/api',
+              'smart-consulta-prd-hp-260407.web.app': '${PRD_API_URL}/api',
+              'smart-consulta-prd-hp-260407.firebaseapp.com': '${PRD_API_URL}/api'
+            }
+          };
+          EOF
+
+      - name: Upload generated hosting files
+        uses: actions/upload-artifact@v4
+        with:
+          name: hosting-${{ steps.env.outputs.environment_name }}
+          path: |
+            frontend/public/index.html
+            frontend/public/app-config.js
+
+      - name: Deploy to Firebase Hosting
+        run: npx firebase-tools deploy --project "${{ steps.env.outputs.firebase_project_id }}" --only hosting --token "${FIREBASE_TOKEN}" --non-interactive
+
+      - name: Deployment summary
+        shell: bash
+        run: |
+          {
+            echo "## Deploy concluido"
+            echo ""
+            echo "- Branch: ${GITHUB_REF_NAME}"
+            echo "- Ambiente: ${{ steps.env.outputs.environment_name }}"
+            echo "- Projeto Firebase: ${{ steps.env.outputs.firebase_project_id }}"
+            echo "- API configurada: ${{ steps.env.outputs.api_url }}"
+          } >> "$GITHUB_STEP_SUMMARY"
