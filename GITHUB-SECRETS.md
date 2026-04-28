@@ -12,6 +12,9 @@ Como gerar:
 firebase login:ci
 ```
 
+- `RAILWAY_TOKEN` (opcional — só necessário para deploy automático do backend via Railway)
+- `RAILWAY_PROJECT_ID` (opcional — ID do projeto Railway que recebe o backend)
+
 Copie o token gerado e salve em `Settings > Secrets and variables > Actions > Secrets`.
 
 ## Variables

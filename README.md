@@ -182,6 +182,10 @@ O sistema envia automaticamente:
 3. Configure as variáveis de ambiente
 4. Deploy automático!
 
+> O projeto também inclui CI/CD com GitHub Actions.
+> A pipeline executa `npm install`, `npm install --prefix backend` e `npm run build` antes de publicar o frontend no Firebase.
+> Se `RAILWAY_TOKEN` e `RAILWAY_PROJECT_ID` estiverem configurados, ela também pode subir o backend automaticamente.
+
 ### Opção 2 — VPS (DigitalOcean, Contabo)
 ```bash
 # Instalar PM2
