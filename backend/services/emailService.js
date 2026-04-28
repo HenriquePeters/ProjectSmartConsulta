@@ -1,6 +1,6 @@
 // services/emailService.js — Envio de e-mails com Nodemailer
 const nodemailer = require('nodemailer');
-require('dotenv').config();
+require('../env-loader');
 
 // ─────────────────────────────────────────
 // Configuração do transporter

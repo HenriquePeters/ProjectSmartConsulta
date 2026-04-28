@@ -1,5 +1,5 @@
 // seed.js — Popular banco com dados iniciais
-require('dotenv').config();
+require('./env-loader');
 const bcrypt = require('bcryptjs');
 const { sequelize, User, Specialty, Clinic, Doctor, DoctorAvailability } = require('./models');
 

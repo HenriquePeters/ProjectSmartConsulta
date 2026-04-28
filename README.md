@@ -61,6 +61,15 @@ EMAIL_USER=seuemail@gmail.com
 EMAIL_PASS=sua_senha_de_app_gmail
 ```
 
+Se quiser usar ambientes separados, copie também:
+
+```bash
+cp .env.development.example .env.development
+cp .env.production.example .env.production
+```
+
+> Para o deploy em Firebase Hosting, o pipeline usa as variáveis `DEV_API_URL` e `PRD_API_URL` para gerar `frontend/public/app-config.js` automaticamente.
+
 > **Dica para Gmail:** Use uma "Senha de App" gerada em:
 > Conta Google → Segurança → Verificação em 2 etapas → Senhas de app
 

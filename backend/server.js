@@ -1,5 +1,5 @@
 // server.js — Servidor principal Express
-require('dotenv').config();
+require('./env-loader');
 const express    = require('express');
 const helmet     = require('helmet');
 const cors       = require('cors');

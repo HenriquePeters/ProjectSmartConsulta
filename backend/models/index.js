@@ -3,7 +3,6 @@
 // ============================================================
 const { Sequelize, DataTypes } = require('sequelize');
 const path = require('path');
-require('dotenv').config();
 
 // Configuração da conexão
 const isPostgres = process.env.DB_DIALECT === 'postgres' || Boolean(process.env.DATABASE_URL);

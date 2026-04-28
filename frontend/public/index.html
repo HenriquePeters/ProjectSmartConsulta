@@ -8,6 +8,18 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <script src="./app-config.js"></script>
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js';
+  const cfg = window.SMART_CONSULTA_CONFIG || {};
+  const host = window.location.hostname;
+  const firebaseConfig = cfg.firebaseConfigByHost?.[host] || cfg.firebaseConfig;
+  if (firebaseConfig) {
+    window.firebaseApp = initializeApp(firebaseConfig);
+    console.log('✅ Firebase inicializado para', host);
+  } else {
+    console.warn('⚠️ Firebase config não encontrada para', host);
+  }
+</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
