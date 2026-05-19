@@ -206,5 +206,27 @@ git push heroku main
 
 ---
 
-## 📝 Licença
+## � Plano de Implantação
+
+Este projeto foi planejado como aplicação web com frontend hospedado no Firebase Hosting e backend Express hospedado em nuvem separada.
+
+- Ambiente DEV/HML: `dev` branch + Firebase Hosting `smart-consulta-dev-hp-20260407`
+- Ambiente PRD: `main` branch + Firebase Hosting `smart-consulta-prd-hp-260407`
+- Configuração de API separada via `DEV_API_URL` e `PRD_API_URL`
+- Deploy automático com GitHub Actions em `.github/workflows/deploy.yml`
+
+## 📘 Manual de Usuário
+
+1. Acesse a URL do ambiente desejado.
+2. Faça login ou crie conta.
+3. Busque uma clínica e selecione a especialidade.
+4. Escolha data e horário disponíveis.
+5. Confirme o agendamento.
+6. Veja seus agendamentos em histórico e use cancelamento ou avaliação.
+
+> Consulte `MANUAL-DO-USUARIO.md` para o passo a passo detalhado.
+
+---
+
+## �📝 Licença
 Smart Consulta © 2026 — Todos os direitos reservados.

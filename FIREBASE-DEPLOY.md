@@ -1,27 +1,33 @@
 # Firebase Deploy
 
-O frontend do Smart Consulta pode ser publicado no Firebase Hosting com dois projetos:
+Este projeto usa Firebase Hosting para publicar o frontend estático em dois ambientes separados:
 
-- `dev`
-- `prod`
+- `dev` → ambiente de desenvolvimento/homologação
+- `prod` → ambiente de produção
 
-## Arquivos ja preparados
+## Arquivos já preparados
 
 - `firebase.json`
 - `.firebaserc`
 - `frontend/public/app-config.js`
 - `package.json` na raiz com scripts de deploy
+- `.github/workflows/deploy.yml` para CI/CD
 
-## Ajustes necessarios
+## Como funciona
 
-1. Os projetos Firebase ja foram criados:
-   - `smart-consulta-dev-hp-20260407`
-   - `smart-consulta-prd-hp-260407`
-2. Edite `frontend/public/app-config.js` e informe as URLs reais da API:
-   - `YOUR_DEV_API_URL`
-   - `YOUR_PROD_API_URL`
+A pipeline do GitHub Actions gera `frontend/public/app-config.js` automaticamente usando as variáveis:
 
-## Comandos
+- `DEV_API_URL`
+- `PRD_API_URL`
+
+Isso evita expor URLs de API no repositório e permite separar DEV/HML e PRD.
+
+## Projetos Firebase
+
+- `smart-consulta-dev-hp-20260407`
+- `smart-consulta-prd-hp-260407`
+
+## Comandos locais
 
 Rodar API local:
 
@@ -29,24 +35,21 @@ Rodar API local:
 npm run dev:api
 ```
 
-Testar Hosting localmente:
+Testar Hosting localmente com Firebase Emulator:
 
 ```bash
 npm run firebase:serve
 ```
 
-Publicar dev:
+Publicar front-end manualmente (quando necessário):
 
 ```bash
 npm run firebase:deploy:dev
-```
-
-Publicar prod:
-
-```bash
 npm run firebase:deploy:prod
 ```
 
+> Atenção: para o deploy manual, verifique se `frontend/public/app-config.js` está configurado com as URLs corretas da API antes de publicar.
+
 ## Importante
 
-Firebase Hosting publica apenas o frontend estatico. O backend Express deste projeto precisa continuar hospedado separadamente em producao.
+Firebase Hosting publica apenas o frontend estático. O backend Express deste projeto deve estar hospedado separadamente, por exemplo em Railway, Render ou outro serviço de nuvem.

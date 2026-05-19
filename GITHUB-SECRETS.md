@@ -1,32 +1,35 @@
 # GitHub Secrets e Variables
 
-Para a pipeline funcionar no GitHub Actions, configure estes itens no repositorio:
+Para a pipeline funcionar no GitHub Actions, configure estes itens no repositório.
 
 ## Secrets
 
 - `FIREBASE_TOKEN`
-
-Como gerar:
+  - Gere com:
 
 ```bash
 firebase login:ci
 ```
 
-- `RAILWAY_TOKEN` (opcional — só necessário para deploy automático do backend via Railway)
+- `RAILWAY_TOKEN` (opcional — necessário apenas para deploy automático do backend no Railway)
 - `RAILWAY_PROJECT_ID` (opcional — ID do projeto Railway que recebe o backend)
 
-Copie o token gerado e salve em `Settings > Secrets and variables > Actions > Secrets`.
+Adicione esses valores em `Settings > Secrets and variables > Actions > Secrets`.
 
 ## Variables
 
-Salve em `Settings > Secrets and variables > Actions > Variables`:
+Adicione em `Settings > Secrets and variables > Actions > Variables`:
 
 - `FIREBASE_PROJECT_DEV=smart-consulta-dev-hp-20260407`
 - `FIREBASE_PROJECT_PRD=smart-consulta-prd-hp-260407`
 - `DEV_API_URL=https://sua-api-dev.com`
 - `PRD_API_URL=https://sua-api-prd.com`
 
+> `DEV_API_URL` e `PRD_API_URL` devem apontar para as URLs públicas do backend Express em cada ambiente.
+
 ## Regra de deploy
 
-- push em `dev` publica em DEV
-- push em `main` publica em PRD
+- `dev` → ambiente de desenvolvimento/homologação no Firebase Hosting
+- `main` → ambiente de produção no Firebase Hosting
+
+A pipeline usa esses valores para gerar o arquivo de configuração do frontend e publicar o site no ambiente correto.

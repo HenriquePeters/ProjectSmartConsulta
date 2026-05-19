@@ -3,11 +3,37 @@
   "version": "1.0.0",
   "description": "Backend da plataforma Smart Consulta — Revolucionando Agendamentos Médicos",
   "main": "server.js",
+
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "seed": "node seed.js"
+    "seed": "node seed.js",
+
+    "test": "jest --runInBand --forceExit --detectOpenHandles",
+    "test:watch": "jest --watchAll",
+    "test:coverage": "jest --coverage --runInBand --forceExit"
   },
+
+  "jest": {
+    "testEnvironment": "node",
+
+    "setupFiles": [
+      "./tests/setup.js"
+    ],
+
+    "testMatch": [
+      "**/*.test.js"
+    ],
+
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+
+    "testTimeout": 30000,
+
+    "verbose": true
+  },
+
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -27,9 +53,13 @@
     "sqlite3": "^5.1.6",
     "uuid": "^9.0.0"
   },
+
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^6.3.4"
   },
+
   "engines": {
     "node": ">=18.0.0"
   }

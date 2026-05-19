@@ -31,7 +31,10 @@ const sequelize = isPostgres
       })
   : new Sequelize({
       dialect: 'sqlite',
-      storage: path.resolve(__dirname, '..', process.env.DB_STORAGE || './database/smart_consulta.db'),
+      // Use literal ':memory:' when running tests in memory; otherwise resolve a file path
+      storage: (process.env.DB_STORAGE === ':memory:')
+        ? ':memory:'
+        : path.resolve(__dirname, '..', process.env.DB_STORAGE || './database/smart_consulta.db'),
       logging: false,
     });
 

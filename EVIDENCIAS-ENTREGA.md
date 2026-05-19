@@ -10,6 +10,8 @@ Inclua no PDF:
 - print da pasta `.github/workflows`
 - print do arquivo `deploy.yml`
 - print do historico de commits
+- link para `PLANO-DE-IMPLANTACAO.md`
+- link para `MANUAL-DO-USUARIO.md`
 
 ## 2. Evidencia de seguranca
 
